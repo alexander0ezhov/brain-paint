@@ -9,3 +9,10 @@ export const trainButton = <HTMLButtonElement>document.getElementById("train");
 export const recognizeButton = <HTMLButtonElement>(
   document.getElementById("recognize")
 );
+
+// export const resizeCanvas = () => {
+//   const minWidth = visualViewport.width - 48;
+//   const minHeight = visualViewport.height - 78;
+//   // canvas.style.width = `${minWidth}px`;
+//   // canvas.style.height = `${minHeight}px`;
+// };

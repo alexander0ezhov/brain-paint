@@ -104,6 +104,7 @@ const onKeyDown = (e: KeyboardEvent) => {
 };
 
 export default () => {
+  // resizeCanvas();
   canvas.addEventListener("mousedown", onMouseDown);
   canvas.addEventListener("touchstart", onMouseDown);
   canvas.addEventListener("mousemove", onMouseMove);
@@ -111,6 +112,8 @@ export default () => {
   canvas.addEventListener("mouseup", onMouseUp);
   canvas.addEventListener("touchcancel", onMouseUp);
   document.addEventListener("keypress", onKeyDown);
+  // window.addEventListener("orientationchange", resizeCanvas);
+  // window.addEventListener("resize", resizeCanvas);
   clearButton.onclick = onClear;
   recognizeButton.onclick = onRecognize;
   trainButton.onclick = onTrain;
