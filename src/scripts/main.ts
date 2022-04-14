@@ -1,5 +1,12 @@
 import * as brain from "brain.js";
-import { canvas, ctx, LINEWIDTH, PIXEL } from "./utils/canvas";
+import {
+  canvas,
+  clearButton,
+  ctx,
+  LINEWIDTH,
+  recognizeButton,
+  trainButton,
+} from "./utils/canvas";
 import { calculate, clearCanvas } from "./utils/draw";
 import { INeuralNetworkDatum } from "brain.js/dist/src/neural-network";
 
@@ -51,29 +58,44 @@ const onMouseUp = (): void => {
   isMouseDown = false;
 };
 
-const onKeyDown = (event: KeyboardEvent) => {
-  switch (event.key.toLowerCase()) {
-    case "r": {
-      const netWork = new brain.NeuralNetwork();
-      netWork.train(train_data, { log: true });
-      const result = brain.likely(calculate(), netWork);
-      alert(result);
+const onClear = () => {
+  clearCanvas();
+};
+
+const onTrain = () => {
+  const calculation = calculate();
+  const answer = prompt("Что это?");
+  if (answer) {
+    train_data.push({
+      input: calculation,
+      output: { [answer]: 1 },
+    });
+  }
+  setTimeout(clearCanvas, 500);
+};
+
+const onRecognize = () => {
+  const netWork = new brain.NeuralNetwork();
+  netWork.train(train_data, { log: true });
+  const result = brain.likely(calculate(), netWork);
+  alert(result);
+};
+
+const onKeyDown = (e: KeyboardEvent) => {
+  switch (e.key.toLowerCase()) {
+    case "r":
+    case "к": {
+      onRecognize();
       break;
     }
-    case "d": {
-      const calculation = calculate();
-      const answer = prompt("Что это?");
-      if (answer) {
-        train_data.push({
-          input: calculation,
-          output: { [answer]: 1 },
-        });
-      }
-      setTimeout(clearCanvas, 500);
+    case "t":
+    case "е": {
+      onTrain();
       break;
     }
-    case "c": {
-      clearCanvas();
+    case "c":
+    case "с": {
+      onClear();
       break;
     }
     default:
@@ -89,4 +111,7 @@ export default () => {
   canvas.addEventListener("mouseup", onMouseUp);
   canvas.addEventListener("touchcancel", onMouseUp);
   document.addEventListener("keypress", onKeyDown);
+  clearButton.onclick = onClear;
+  recognizeButton.onclick = onRecognize;
+  trainButton.onclick = onTrain;
 };

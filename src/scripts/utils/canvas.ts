@@ -4,3 +4,8 @@ export const FPS = 60 as const;
 export const FPS_TIMEOUT = 1000 / FPS;
 export const PIXEL = 15;
 export const LINEWIDTH = 5;
+export const clearButton = <HTMLButtonElement>document.getElementById("clear");
+export const trainButton = <HTMLButtonElement>document.getElementById("train");
+export const recognizeButton = <HTMLButtonElement>(
+  document.getElementById("recognize")
+);
