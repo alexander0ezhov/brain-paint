@@ -1,5 +1,5 @@
 import * as brain from "brain.js";
-import { canvas, ctx, PIXEL } from "./utils/canvas";
+import { canvas, ctx, LINEWIDTH, PIXEL } from "./utils/canvas";
 import { calculate, clearCanvas } from "./utils/draw";
 import { INeuralNetworkDatum } from "brain.js/dist/src/neural-network";
 
@@ -16,13 +16,13 @@ const onClientMove = (offsetX: number, offsetY: number) => {
   if (isMouseDown) {
     ctx.fillStyle = "red";
     ctx.strokeStyle = "red";
-    ctx.lineWidth = PIXEL;
+    ctx.lineWidth = LINEWIDTH;
 
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(offsetX, offsetY, PIXEL / 2, 0, Math.PI * 2);
+    ctx.arc(offsetX, offsetY, LINEWIDTH / 2, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.beginPath();
