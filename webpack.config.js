@@ -42,6 +42,7 @@ module.exports = {
             directory: path.join(__dirname, "public"),
         },
         compress: true,
+        host: '0.0.0.0',
         port: 8080,
     },
     plugins: [
