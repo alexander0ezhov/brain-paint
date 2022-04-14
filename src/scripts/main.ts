@@ -1,5 +1,5 @@
 import { canvas, ctx, PIXEL } from "./utils/canvas";
-import { clearCanvas, drawGrid } from "./utils/draw";
+import { calculate, clearCanvas, drawGrid } from "./utils/draw";
 
 let isMouseDown = false;
 
@@ -40,7 +40,8 @@ const onKeyDown = (event: KeyboardEvent) => {
       break;
     }
     case "d": {
-      drawGrid();
+      calculate();
+      // drawGrid();
       break;
     }
     case "c": {

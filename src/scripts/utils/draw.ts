@@ -3,6 +3,8 @@ import { canvas, ctx, PIXEL } from "./canvas";
 const w = canvas.width;
 const h = canvas.height;
 const steps: number = w / PIXEL;
+const xStep: number = w / steps;
+const yStep: number = h / steps;
 
 export const drawLine = (
   x1: number,
@@ -34,9 +36,6 @@ export const clearCanvas = (): void => {
 };
 
 export const drawGrid = (): void => {
-  const xStep: number = w / steps;
-  const yStep: number = h / steps;
-
   for (let x = 0; x < w; x += xStep) {
     drawLine(x, 0, x, h);
   }
@@ -45,4 +44,33 @@ export const drawGrid = (): void => {
   }
 };
 
-const calculate = () => {};
+export const calculate = () => {
+  const area: number[] = [];
+  let drawArea = [];
+  for (let x = 0; x < w; x += xStep) {
+    for (let y = 0; y < h; y += yStep) {
+      const imageData = ctx.getImageData(x, y, PIXEL, PIXEL).data;
+      let isEmpty: boolean = true;
+      for (let i = 0; i < imageData.length; i += 10) {
+        if (imageData[i]) {
+          isEmpty = false;
+        }
+      }
+      if (!isEmpty) {
+        drawArea.push([x, y, xStep, yStep]);
+      }
+      area.push(Number(!isEmpty));
+    }
+    clearCanvas();
+    drawGrid();
+    for (let _d in drawArea) {
+      drawCell(
+        drawArea[_d][0],
+        drawArea[_d][1],
+        drawArea[_d][2],
+        drawArea[_d][3]
+      );
+    }
+  }
+  return area;
+};
