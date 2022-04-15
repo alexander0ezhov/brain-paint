@@ -4,7 +4,6 @@
   "main": "index.ts",
   "author": "alexander0ezhov",
   "license": "MIT",
-  "packageManager": "yarn@3.2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexander0ezhov/brain-paint.git"
