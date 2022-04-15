@@ -128,6 +128,8 @@ export default () => {
   clearButton.onclick = onClear;
   recognizeButton.onclick = onRecognize;
   trainButton.onclick = onTrain;
-  clearStorageButton.onclick = () =>
+  clearStorageButton.onclick = () => {
+    train_data = [];
     localStorage.setItem(TrainStorageKey, JSON.stringify([]));
+  };
 };
