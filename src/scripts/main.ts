@@ -7,6 +7,7 @@ import {
   LINEWIDTH,
   recognizeButton,
   resizeCanvas,
+  setIsLoading,
   trainButton,
 } from "./utils/canvas";
 import { calculate, clearCanvas } from "./utils/draw";
@@ -84,10 +85,13 @@ const onTrain = () => {
 };
 
 const onRecognize = () => {
+  if (!train_data) return;
+  // setIsLoading(true);
   const netWork = new brain.NeuralNetwork();
   netWork.train(train_data, { log: true });
   const result = brain.likely(calculate(), netWork);
   alert(result);
+  // setIsLoading(false);
 };
 
 const onKeyDown = (e: KeyboardEvent) => {

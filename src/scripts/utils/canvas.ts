@@ -12,6 +12,13 @@ export const trainButton = <HTMLButtonElement>document.getElementById("train");
 export const recognizeButton = <HTMLButtonElement>(
   document.getElementById("recognize")
 );
+export const loader = <HTMLDivElement>document.getElementById("loader");
+
+export const setIsLoading = (isLoading: boolean = false): void => {
+  isLoading
+    ? loader.classList.add("visible")
+    : loader.classList.remove("visible");
+};
 
 export const resizeCanvas = () => {
   const minWidth = visualViewport.width;
