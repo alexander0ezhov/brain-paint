@@ -46,6 +46,8 @@ const onMouseMove = (e: MouseEvent): void => {
 };
 
 const onTouchMove = (e: TouchEvent) => {
+  e.stopPropagation();
+  e.preventDefault();
   const touch = e.touches[0];
   const mouseEvent = new MouseEvent("mousemove", {
     clientX: touch.clientX,
@@ -71,6 +73,7 @@ const onTrain = () => {
       output: { [answer]: 1 },
     });
   }
+  localStorage.setItem("train_data", JSON.stringify(train_data));
   setTimeout(clearCanvas, 500);
 };
 
@@ -104,7 +107,8 @@ const onKeyDown = (e: KeyboardEvent) => {
 };
 
 export default () => {
-  // resizeCanvas();
+  const storageData = localStorage.getItem("train_data");
+  if (storageData) train_data = JSON.parse(storageData);
   canvas.addEventListener("mousedown", onMouseDown);
   canvas.addEventListener("touchstart", onMouseDown);
   canvas.addEventListener("mousemove", onMouseMove);
