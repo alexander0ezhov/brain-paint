@@ -2,15 +2,19 @@ import * as brain from "brain.js";
 import {
   canvas,
   clearButton,
+  clearStorageButton,
   ctx,
   LINEWIDTH,
   recognizeButton,
+  resizeCanvas,
   trainButton,
 } from "./utils/canvas";
 import { calculate, clearCanvas } from "./utils/draw";
 import { INeuralNetworkDatum } from "brain.js/dist/src/neural-network";
 
 let isMouseDown = false;
+const TrainStorageKey = "train_data" as const;
+let zoom: number = 1;
 
 type InputType = {};
 type OutputType = {};
@@ -21,19 +25,21 @@ let train_data: Array<
 
 const onClientMove = (offsetX: number, offsetY: number) => {
   if (isMouseDown) {
+    const x = offsetX / zoom;
+    const y = offsetY / zoom;
     ctx.fillStyle = "red";
     ctx.strokeStyle = "red";
     ctx.lineWidth = LINEWIDTH;
 
-    ctx.lineTo(offsetX, offsetY);
+    ctx.lineTo(x, y);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(offsetX, offsetY, LINEWIDTH / 2, 0, Math.PI * 2);
+    ctx.arc(x, y, LINEWIDTH / 2, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(offsetX, offsetY);
+    ctx.moveTo(x, y);
   }
 };
 
@@ -73,7 +79,7 @@ const onTrain = () => {
       output: { [answer]: 1 },
     });
   }
-  localStorage.setItem("train_data", JSON.stringify(train_data));
+  localStorage.setItem(TrainStorageKey, JSON.stringify(train_data));
   setTimeout(clearCanvas, 500);
 };
 
@@ -107,7 +113,8 @@ const onKeyDown = (e: KeyboardEvent) => {
 };
 
 export default () => {
-  const storageData = localStorage.getItem("train_data");
+  zoom = resizeCanvas();
+  const storageData = localStorage.getItem(TrainStorageKey);
   if (storageData) train_data = JSON.parse(storageData);
   canvas.addEventListener("mousedown", onMouseDown);
   canvas.addEventListener("touchstart", onMouseDown);
@@ -121,4 +128,6 @@ export default () => {
   clearButton.onclick = onClear;
   recognizeButton.onclick = onRecognize;
   trainButton.onclick = onTrain;
+  clearStorageButton.onclick = () =>
+    localStorage.setItem(TrainStorageKey, JSON.stringify([]));
 };

@@ -35,22 +35,13 @@ export const clearCanvas = (): void => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-export const drawGrid = (): void => {
-  for (let x = 0; x < w; x += xStep) {
-    drawLine(x, 0, x, h);
-  }
-  for (let y = 0; y < h; y += yStep) {
-    drawLine(0, y, w, y);
-  }
-};
-
 export const calculate = () => {
   const area: number[] = [];
   let drawArea = [];
   for (let x = 0; x < w; x += xStep) {
     for (let y = 0; y < h; y += yStep) {
       const imageData = ctx.getImageData(x, y, xStep, yStep).data;
-      const nonEmpty: boolean = imageData.some(item=>item);
+      const nonEmpty: boolean = imageData.some((item) => item);
       if (nonEmpty) drawArea.push([x, y, xStep, yStep]);
       area.push(Number(nonEmpty));
     }
