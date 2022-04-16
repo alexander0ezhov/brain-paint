@@ -1,4 +1,5 @@
-import * as brain from "brain.js";
+// @ts-ignore
+import { INeuralNetworkDatum } from "brain.js/dist/src/neural-network";
 import {
   canvas,
   clearButton,
@@ -11,7 +12,8 @@ import {
   trainButton,
 } from "./utils/canvas";
 import { calculate, clearCanvas } from "./utils/draw";
-import { INeuralNetworkDatum } from "brain.js/dist/src/neural-network";
+
+const BrainWorker = new Worker(new URL("./worker.js", import.meta.url));
 
 let isMouseDown = false;
 const TrainStorageKey = "train_data" as const;
@@ -72,6 +74,7 @@ const onClear = () => {
 };
 
 const onTrain = () => {
+  setIsLoading(true);
   const calculation = calculate();
   const answer = prompt("Что это?");
   if (answer) {
@@ -81,17 +84,20 @@ const onTrain = () => {
     });
   }
   localStorage.setItem(TrainStorageKey, JSON.stringify(train_data));
-  setTimeout(clearCanvas, 500);
+  setTimeout(() => {
+    setIsLoading(false);
+    clearCanvas();
+  }, 500);
 };
 
-const onRecognize = () => {
+const onRecognize = async () => {
   if (!train_data) return;
-  // setIsLoading(true);
-  const netWork = new brain.NeuralNetwork();
-  netWork.train(train_data, { log: true });
-  const result = brain.likely(calculate(), netWork);
-  alert(result);
-  // setIsLoading(false);
+  await setIsLoading(true);
+  BrainWorker.postMessage({
+    type: "RECOGNIZE",
+    train_data,
+    calculation: calculate(),
+  });
 };
 
 const onKeyDown = (e: KeyboardEvent) => {
@@ -135,5 +141,13 @@ export default () => {
   clearStorageButton.onclick = () => {
     train_data = [];
     localStorage.setItem(TrainStorageKey, JSON.stringify([]));
+  };
+  BrainWorker.onmessage = ({ data }) => {
+    switch (data.type) {
+      case "RECOGNIZE":
+        setIsLoading(false);
+        alert(data.result);
+        break;
+    }
   };
 };
