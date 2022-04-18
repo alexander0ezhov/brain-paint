@@ -74,15 +74,14 @@ const onClear = () => {
 };
 
 const onTrain = () => {
+  const answer = prompt("Что это?");
+  if (!answer) return;
   setIsLoading(true);
   const calculation = calculate();
-  const answer = prompt("Что это?");
-  if (answer) {
-    train_data.push({
-      input: calculation,
-      output: { [answer]: 1 },
-    });
-  }
+  train_data.push({
+    input: calculation,
+    output: { [answer]: 1 },
+  });
   localStorage.setItem(TrainStorageKey, JSON.stringify(train_data));
   setTimeout(() => {
     setIsLoading(false);
