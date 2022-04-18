@@ -24,7 +24,7 @@ export const setIsLoading = (isLoading: boolean = false): void => {
 export const resizeCanvas = () => {
   const minWidth = visualViewport.width;
   const minHeight = visualViewport.height;
-  const minSize = Math.min(minWidth, minHeight, 600) - 48;
+  const minSize = Math.min(minWidth, minHeight - 210, 600) - 48;
   const styleSize = `calc(${minSize}px)`;
   canvas.style.width = styleSize;
   canvas.style.height = styleSize;
