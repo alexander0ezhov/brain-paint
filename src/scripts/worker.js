@@ -1,15 +1,21 @@
 import * as brain from "brain.js";
+let netWork = null;
 
-onmessage = ({ data }) => {
+onmessage = async ({ data }) => {
   switch (data.type) {
+    case "CLEAR":
+      netWork = null;
+      break;
     case "RECOGNIZE":
-      const netWork = new brain.NeuralNetwork();
-      netWork.train(data.train_data, { log: true });
-      const result = brain.likely(data.calculation, netWork);
+      const result = netWork
+        ? brain.likely(data.calculation, netWork)
+        : "Необходима тренировка";
       postMessage({ type: data.type, result });
       break;
     case "TRAIN":
-      console.log(localStorage);
+      netWork = new brain.NeuralNetwork();
+      await netWork.trainAsync(data.train_data, { log: true });
+      postMessage({ type: data.type });
       break;
   }
 };

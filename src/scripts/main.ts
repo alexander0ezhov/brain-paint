@@ -3,6 +3,7 @@ import { INeuralNetworkDatum } from "brain.js/dist/src/neural-network";
 import {
   canvas,
   clearButton,
+  saveButton,
   clearStorageButton,
   ctx,
   LINEWIDTH,
@@ -73,7 +74,7 @@ const onClear = () => {
   clearCanvas();
 };
 
-const onTrain = () => {
+const onSave = () => {
   const answer = prompt("Что это?");
   if (!answer) return;
   setIsLoading(true);
@@ -89,15 +90,22 @@ const onTrain = () => {
   }, 500);
 };
 
-const onRecognize = async () => {
+const onTrain = () => {
   if (!train_data.length) {
     alert("Нет тренировочных данных");
     return;
   }
+  setIsLoading(true);
+  BrainWorker.postMessage({
+    type: "TRAIN",
+    train_data,
+  });
+};
+
+const onRecognize = async () => {
   await setIsLoading(true);
   BrainWorker.postMessage({
     type: "RECOGNIZE",
-    train_data,
     calculation: calculate(),
   });
 };
@@ -135,13 +143,13 @@ export default () => {
   canvas.addEventListener("mouseup", onMouseUp);
   canvas.addEventListener("touchcancel", onMouseUp);
   document.addEventListener("keypress", onKeyDown);
-  // window.addEventListener("orientationchange", resizeCanvas);
-  // window.addEventListener("resize", resizeCanvas);
   clearButton.onclick = onClear;
+  saveButton.onclick = onSave;
   recognizeButton.onclick = onRecognize;
   trainButton.onclick = onTrain;
   clearStorageButton.onclick = () => {
     train_data = [];
+    BrainWorker.postMessage({ type: "CLEAR" });
     localStorage.setItem(TrainStorageKey, JSON.stringify([]));
   };
   BrainWorker.onmessage = ({ data }) => {
@@ -149,6 +157,10 @@ export default () => {
       case "RECOGNIZE":
         setIsLoading(false);
         alert(data.result);
+        break;
+      case "TRAIN":
+        setIsLoading(false);
+        alert("Тренировка выполнена");
         break;
     }
   };

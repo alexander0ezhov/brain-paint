@@ -5,11 +5,11 @@ export const FPS_TIMEOUT = 1000 / FPS;
 export const PIXEL = 10;
 export const LINEWIDTH = 5;
 export const clearButton = <HTMLButtonElement>document.getElementById("clear");
-console.log(document);
 export const clearStorageButton = <HTMLButtonElement>(
   document.getElementById("clear_storage")
 );
 export const trainButton = <HTMLButtonElement>document.getElementById("train");
+export const saveButton = <HTMLButtonElement>document.getElementById("save");
 export const recognizeButton = <HTMLButtonElement>(
   document.getElementById("recognize")
 );
