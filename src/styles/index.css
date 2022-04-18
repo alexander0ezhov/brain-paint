@@ -23,7 +23,9 @@ html, body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 15px;
+    max-width: 400px;
+    width:100%
 }
 
 .frontpanel button {
@@ -44,8 +46,14 @@ html, body {
     padding: 1rem 1.5rem;
     font-size: 1.3rem;
     border-radius: 0.25rem;
+}
+
+.frontpanel.fp-store button {
     width: 100%;
-    max-width: 400px;
+}
+
+.frontpanel.fp-canvas button {
+    flex: 1;
 }
 
 .frontpanel button.green {
