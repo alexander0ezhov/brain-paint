@@ -90,7 +90,10 @@ const onTrain = () => {
 };
 
 const onRecognize = async () => {
-  if (!train_data) return;
+  if (!train_data.length) {
+    alert("Нет тренировочных данных");
+    return;
+  }
   await setIsLoading(true);
   BrainWorker.postMessage({
     type: "RECOGNIZE",
