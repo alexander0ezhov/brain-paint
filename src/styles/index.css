@@ -20,11 +20,14 @@ html, body {
 }
 
 .frontpanel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-top: 10px;
 }
 
 .frontpanel button {
-    margin: 0 5px;
+    margin: 3px 5px;
     display: inline-block;
     font-weight: 400;
     line-height: 1.5;
@@ -41,6 +44,8 @@ html, body {
     padding: 1rem 1.5rem;
     font-size: 1.3rem;
     border-radius: 0.25rem;
+    width: 100%;
+    max-width: 400px;
 }
 
 .frontpanel button.green {
